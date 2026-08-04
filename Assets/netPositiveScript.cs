@@ -1,52 +1,56 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
-using KModkit;
 
-public class templateScript : MonoBehaviour {
+public class netPositiveScript : MonoBehaviour {
 
     public KMBombInfo Bomb;
+    public KMNeedyModule Needy;
     public KMAudio Audio;
+
 
     //Logging
     static int moduleIdCounter = 1;
     int moduleId;
-    private bool moduleSolved;
+    private bool moduleSolved = true;
+
 
     void Awake () {
         moduleId = moduleIdCounter++;
+        Needy.OnNeedyActivation += OnNeedyActivation;
+        Needy.OnNeedyDeactivation += OnNeedyDeactivation;
+        Needy.OnTimerExpired += OnTimerExpired;
+
         /*
-        foreach (KMSelectable object in keypad) {
-            object.OnInteract += delegate () { keypadPress(object); return false; };
+        foreach (KMSelectable stack in stacks) {
+            KMSelectable pressedStack = stack;
+            stack.OnInteract += delegate () { StackPress(pressedStack); return false; };
         }
         */
-
-        //button.OnInteract += delegate () { buttonPress(); return false; };
-
     }
 
     // Use this for initialization
     void Start () {
+        moduleSolved = true;
+	}
 
-    }
-
-    // Update is called once per frame
-    void Update () {
-
-    }
-
-    /*
-    void keypadPress(KMSelectable object) {
+    void OnNeedyActivation()
+    {
+        moduleSolved = false;
         
     }
-    */
 
-    /*
-    void buttonPress() {
-
+    void OnNeedyDeactivation ()
+    {
+        moduleSolved = true;
+        
     }
-    */
+
+    void OnTimerExpired()
+    {
+        Needy.HandleStrike();
+        moduleSolved = true;
+        
+    }
 }
