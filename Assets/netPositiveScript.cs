@@ -175,6 +175,7 @@ public class netPositiveScript : MonoBehaviour {
     }
 
     void SquarePress(KMSelectable S) {
+        Audio.PlaySoundAtTransform("click", S.transform);
         S.AddInteractionPunch(0.2f);
         if (moduleSolved) { return; }
         for (int W = 0; W < 7; W++) {
