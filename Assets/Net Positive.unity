@@ -298,9 +298,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114014053031651098, guid: 85a2c623b85c45f4fbcbd5bedc7a4b15,
+        type: 2}
+      propertyPath: Bomb
+      value: 
+      objectReference: {fileID: 1297191704}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 85a2c623b85c45f4fbcbd5bedc7a4b15, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1297191704 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114082053733812398, guid: 85a2c623b85c45f4fbcbd5bedc7a4b15,
+    type: 2}
+  m_PrefabInternal: {fileID: 1297191703}
+  m_Script: {fileID: 2144496390, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
 --- !u!1001 &2006525007
 Prefab:
   m_ObjectHideFlags: 0
@@ -339,6 +350,11 @@ Prefab:
     - target: {fileID: 439642, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
+        type: 2}
+      propertyPath: TwitchPlaysActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}

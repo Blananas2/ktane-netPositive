@@ -9,6 +9,7 @@ using Rnd = UnityEngine.Random;
 public class netPositiveScript : MonoBehaviour {
 
     public KMNeedyModule Needy;
+    public KMBombInfo Bomb;
     public KMAudio Audio;
 
     public GameObject WholeNet;
@@ -29,12 +30,16 @@ public class netPositiveScript : MonoBehaviour {
     static int moduleIdCounter = 1;
     int moduleId;
     private bool moduleSolved = true;
+    bool spinning = true; //refers to when the autosolver has solved the module, and thus can leave it alone. will be reset upon another activation
+    bool bombSolved;
 
     void Awake() {
         moduleId = moduleIdCounter++;
         Needy.OnNeedyActivation += OnNeedyActivation;
         Needy.OnNeedyDeactivation += OnNeedyDeactivation;
         Needy.OnTimerExpired += OnTimerExpired;
+        Bomb.OnBombExploded += delegate () { bombSolved = true; };
+        Bomb.OnBombSolved += delegate () { bombSolved = true; };
 
         foreach (KMSelectable sel in SquareSels) {
             sel.OnInteract += delegate () { SquarePress(sel); return false; };
@@ -54,6 +59,7 @@ public class netPositiveScript : MonoBehaviour {
 
     void OnNeedyActivation() {
         moduleSolved = false;
+        spinning = false;
         for (int l = 0; l < 7; l++) {
             LightEncaps[l].SetActive(false);
             state[l] = false;
@@ -186,10 +192,7 @@ public class netPositiveScript : MonoBehaviour {
         }
     }
 
-    void OnNeedyDeactivation() {
-        moduleSolved = true;
-        
-    }
+    void OnNeedyDeactivation() { moduleSolved = true; }
 
     void OnTimerExpired() {
         moduleSolved = true;
@@ -244,11 +247,19 @@ public class netPositiveScript : MonoBehaviour {
     }
 
     private IEnumerator THFS() {
-        for (int s = 0; s < 7; s++) {
-            if (state[s] != s < 2) {
-                SquareSels[s].OnInteract();
+        while (!bombSolved)
+        {
+            while (spinning)
+            {
                 yield return new WaitForSeconds(.1f);
             }
+            for (int s = 0; s < 7; s++) {
+                if (state[s] != s < 2) {
+                    SquareSels[s].OnInteract();
+                    yield return new WaitForSeconds(.1f);
+                }
+            }
+            spinning = true;
         }
     }
 }
